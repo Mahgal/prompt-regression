@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prompt-regression"
+version = "0.1.0"
+description = "YAML-defined prompt regression tests for LLM endpoints — catch a prompt edit that quietly breaks your outputs."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "Khaan Superintelligence", email = "contact@khaan.si" }]
+keywords = ["llm", "prompt", "regression-testing", "cli", "evaluation"]
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Software Development :: Testing",
+]
+# PyYAML is used when installed; without it a bundled mini parser handles
+# the case-file subset (see README). It is declared for convenience, not
+# as a hard runtime requirement of the code paths.
+dependencies = ["PyYAML>=5.4"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+prompt-regression = "prompt_regression.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["prompt_regression*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,48 @@
+# Example prompt regression cases for prompt-regression.
+# Run them offline, at zero cost, with the built-in mock provider:
+#
+#   python -m prompt_regression cases.example.yaml --provider mock --report report.json
+#
+# All seven cases pass against the mock provider's documented rules.
+# Point --provider openai-compatible at a real endpoint to test a real model.
+
+cases:
+  - id: greeting-contains-hello
+    prompt: "Say hello and greet the user named {name}"
+    variables:
+      name: "Ada"
+    expect:
+      contains: "Hello"
+
+  - id: capital-of-france
+    prompt: "What is the capital of France? Answer in one sentence."
+    expect:
+      contains: "Paris"
+
+  - id: sentiment-is-a-single-label
+    prompt: "Classify the sentiment of this review as positive, negative or neutral. Review: I love this, it is excellent!"
+    expect:
+      regex: "^positive$"
+
+  - id: json-extraction-is-valid-json
+    prompt: "Extract the user profile and return JSON only."
+    expect:
+      json_valid: true
+      contains: '"status"'
+
+  - id: summary-stays-short
+    prompt: "Summarize the quarterly report in one short line."
+    expect:
+      max_length: 120
+
+  - id: spanish-translation
+    prompt: "Translate 'thank you for your message' into Spanish."
+    expect:
+      contains: "Hola"
+      max_length: 80
+
+  - id: capital-answer-format
+    prompt: "What is the capital of France?"
+    expect:
+      regex: "capital of France is Paris\\."
+      not_contains: "London"
